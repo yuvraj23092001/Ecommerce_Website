@@ -27,14 +27,7 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {
-              "C:\\Users\\Yuvraj\\Desktop\\Ecommerce_Website\\backend\\skinet\\Core\\Core.csproj": {
-                "projectPath": "C:\\Users\\Yuvraj\\Desktop\\Ecommerce_Website\\backend\\skinet\\Core\\Core.csproj"
-              },
-              "C:\\Users\\Yuvraj\\Desktop\\Ecommerce_Website\\backend\\skinet\\Infrastructure\\Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\Yuvraj\\Desktop\\Ecommerce_Website\\backend\\skinet\\Infrastructure\\Infrastructure.csproj"
-              }
-            }
+            "projectReferences": {}
           }
         },
         "warningProperties": {
@@ -84,126 +77,6 @@
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
             },
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100-preview.6.23330.14\\RuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "C:\\Users\\Yuvraj\\Desktop\\Ecommerce_Website\\backend\\skinet\\Core\\Core.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\Yuvraj\\Desktop\\Ecommerce_Website\\backend\\skinet\\Core\\Core.csproj",
-        "projectName": "Core",
-        "projectPath": "C:\\Users\\Yuvraj\\Desktop\\Ecommerce_Website\\backend\\skinet\\Core\\Core.csproj",
-        "packagesPath": "C:\\Users\\Yuvraj\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Yuvraj\\Desktop\\Ecommerce_Website\\backend\\skinet\\Core\\obj\\",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "C:\\Users\\Yuvraj\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net8.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
-            "projectReferences": {}
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "default"
-        }
-      },
-      "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100-preview.6.23330.14\\RuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "C:\\Users\\Yuvraj\\Desktop\\Ecommerce_Website\\backend\\skinet\\Infrastructure\\Infrastructure.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\Yuvraj\\Desktop\\Ecommerce_Website\\backend\\skinet\\Infrastructure\\Infrastructure.csproj",
-        "projectName": "Infrastructure",
-        "projectPath": "C:\\Users\\Yuvraj\\Desktop\\Ecommerce_Website\\backend\\skinet\\Infrastructure\\Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\Yuvraj\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Yuvraj\\Desktop\\Ecommerce_Website\\backend\\skinet\\Infrastructure\\obj\\",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "C:\\Users\\Yuvraj\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net8.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
-            "projectReferences": {
-              "C:\\Users\\Yuvraj\\Desktop\\Ecommerce_Website\\backend\\skinet\\Core\\Core.csproj": {
-                "projectPath": "C:\\Users\\Yuvraj\\Desktop\\Ecommerce_Website\\backend\\skinet\\Core\\Core.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "default"
-        }
-      },
-      "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }

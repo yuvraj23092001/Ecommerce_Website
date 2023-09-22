@@ -1,5 +1,6 @@
 
 using Api.Data;
+using Api.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -19,6 +20,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<StoreContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
+// Adding dependency injection 
+builder.Services.AddScoped<IProductRepository,ProductRepository>();
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
