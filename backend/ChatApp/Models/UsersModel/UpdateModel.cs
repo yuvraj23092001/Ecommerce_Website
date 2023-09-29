@@ -14,12 +14,12 @@ namespace ChatApp.Models.UsersModel
         public string UserName { get; set; } 
         
         [Required]
-        [RegularExpression("^([a-z0-9]+@[a-z]+\\.[a-z]{2,3})$", ErrorMessage = "Enter a Valid Email")]
+        /*[RegularExpression("^([a-z0-9]+@[a-z]+\\.[a-z]{2,3})$", ErrorMessage = "Enter a Valid Email")]*/
         public string Email { get; set; }
 
         //we have two options either we can store the image locally or we can store the image at www.root folder 
         // first local storage option
-        [NotMapped]
+        
         public IFormFile ProfileImage { get; set; }
 
         public string ProfileImageLocation { get; set; }

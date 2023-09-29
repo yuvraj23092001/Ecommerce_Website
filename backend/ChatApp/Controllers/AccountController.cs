@@ -66,7 +66,7 @@ namespace ChatApp.Controllers
         // Creating a post method to update user information 
 
         [HttpPost("update-user")]
-        public IActionResult UpdateUserProfile([FromForm] UpdateModel updateModel, [FromBody] string UserName)
+        public IActionResult UpdateUserProfile([FromForm] UpdateModel updateModel, [FromHeader] string UserName)
         {
             if (ModelState.IsValid)
             {   

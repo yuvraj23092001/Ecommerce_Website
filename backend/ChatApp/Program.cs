@@ -83,7 +83,7 @@ builder.Services.AddSwaggerGen(c =>
 
 // Service Registration
 builder.Services.AddScoped<IProfileService,ProfileService>();
-
+builder.Services.AddScoped<IChatService, ChatServices>();
 // In production, the Angular files will be served from this directory
 
 builder.Services.AddSpaStaticFiles(configuration =>

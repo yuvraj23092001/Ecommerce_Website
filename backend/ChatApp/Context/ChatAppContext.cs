@@ -11,6 +11,6 @@ namespace ChatApp.Context
 
         public virtual DbSet<Profile> Profiles { get; set; }
 
-        
+        public virtual DbSet<MessageText> Messages { get; set; }
     }
 }

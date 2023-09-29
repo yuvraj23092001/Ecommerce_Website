@@ -71,12 +71,12 @@ namespace ChatApp.Infrastructure.ServiceImplementation
 
             // we don't have that user in our database so we will delete it.
             if (updateUser == null) {
-                return null;
+                return null; // me
             }
             // Our username from frontent and backend don't match
             if (updateUser.Email == context.Profiles.FirstOrDefault().Email && updateUser.UserName != userName)
             {
-                return null;
+                return null; // 
             }
 
             /*string Filepath = this.environment.WebRootPath + */
@@ -86,20 +86,23 @@ namespace ChatApp.Infrastructure.ServiceImplementation
             {
                 // First we will create a image name using Guid
                 string FileName = Guid.NewGuid().ToString();
+                // 
 
                 var uploads = Path.Combine(environment.WebRootPath, @"Images/Users/");
-                
-                // Find the extension of the file and also check if it is a image file or not 
-                var extension = Path.GetExtension(updateModel.ProfileImageLocation); // To Extract the extension from the imagepath
-                var allowedExtensions = new string[] { ".jpeg", ".png", ".jpg" };
+
+                // Find the extension of the file and also check if it is a image file or not  Path.GetExtension(updateModel.ProfileImageLocation);
+                var extension = System.IO.Path.GetExtension(updateModel.ProfileImage.FileName);// To Extract the extension from the imagepath
+
+
+                string[] allowedExtensions = new string[] { ".jpeg", ".png", ".jpg" };
                 if (!allowedExtensions.Contains(extension))
                 {
                     return updateUser; // returning previous data from profile of the user
 
                 }
 
-                // If image is stored then we will first delete it 
-                if(updateUser.ImagePath != null && !updateUser.ImagePath.Equals("/Images/default.png"))
+                //If image is stored then we will first delete it
+                if (updateUser.ImagePath != null && !updateUser.ImagePath.Equals("/Images/default.png"))
                 {
                     var oldImagePath = Path.Combine(environment.WebRootPath + updateUser.ImagePath);
                     if (System.IO.File.Exists(oldImagePath))
