@@ -81,6 +81,18 @@ namespace ChatApp.Controllers
 
         }
 
+        [HttpGet("get-user")]
+
+        public IActionResult GetUserProfile([FromQuery]string UserName)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _profileService.GetUser
+                    (UserName);
+                return Ok(user);
+            }
+            return BadRequest(ModelState);
+        }
 
         private string GenerateJSONWebToken(Profile profileInfo)
         {

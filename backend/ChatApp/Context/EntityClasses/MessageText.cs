@@ -5,12 +5,17 @@ namespace ChatApp.Context.EntityClasses
 {
     public class MessageText
     {
+        /*public MessageText(string content, int senderId)
+        {
+                this.Content = content;
+            this.SenderId = senderId;
+        }*/
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
-        public string Content { get; set; }
+        public string Content { get;  set; }
 
         [Required]
         public int SenderId { get; set; }

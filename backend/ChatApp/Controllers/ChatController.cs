@@ -2,6 +2,7 @@
 using ChatApp.Models.MessageModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ChatApp.Controllers
 {
@@ -45,6 +46,7 @@ namespace ChatApp.Controllers
             return BadRequest(new { Message = "Model State is not valid." });
         }
 
+
         [HttpGet("GetMessages")]
 
         public IActionResult Getmsgs(string username, string selusername)
@@ -61,7 +63,26 @@ namespace ChatApp.Controllers
             return BadRequest(new { Message = "Model State is not valid." });
         }
 
-        // make it delete by id 
+        // Method to search other users across the chatapp using their username 
+
+        [HttpGet("SearchOthers")]
+
+        public IActionResult GetOtherUsers(string searchname, string username)
+        {
+            if (ModelState.IsValid)
+            {
+                var searchModels = chatService.SearchOthers(searchname, username);
+
+                if (searchModels.IsNullOrEmpty())
+                {
+                    return BadRequest(new { Message = "No User With Given Name." });
+                }
+
+                return Ok(searchModels);
+            }
+            return BadRequest(new { Message = "Model State is not valid." });
+        }
+
         [HttpDelete("DeleteMessage")]
 
         public IActionResult Delete(int MessageId) {
@@ -73,5 +94,7 @@ namespace ChatApp.Controllers
             return BadRequest(new { Message = "Model State is not valid." });
 
         }
+
+
     }
 }

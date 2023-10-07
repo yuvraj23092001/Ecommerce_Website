@@ -1,5 +1,6 @@
 ﻿using ChatApp.Context.EntityClasses;
 using ChatApp.Models.MessageModel;
+using ChatApp.Models.UsersModel;
 
 namespace ChatApp.Business.ServiceInterfaces
 {
@@ -17,7 +18,9 @@ namespace ChatApp.Business.ServiceInterfaces
 
        void ReplyMessage(TextMessageModel message,int MessageId); // message id for adding to is replyed to 
 
-        bool CheckDeletedById(int Id);
+       bool CheckDeletedById(int Id);
+
+       IEnumerable<SearchModel> SearchOthers(string searchname ,string username); // we will check that search name is different from user name.
 
     }
 }

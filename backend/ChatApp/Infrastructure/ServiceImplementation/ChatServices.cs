@@ -2,6 +2,7 @@
 using ChatApp.Context;
 using ChatApp.Context.EntityClasses;
 using ChatApp.Models.MessageModel;
+using ChatApp.Models.UsersModel;
 using System.Reflection.Metadata;
 
 namespace ChatApp.Infrastructure.ServiceImplementation
@@ -21,7 +22,7 @@ namespace ChatApp.Infrastructure.ServiceImplementation
             var profile = context.Profiles.FirstOrDefault(profile => profile.Id == message.ReceiverId);
             if (profile != null && message.Content != null) // checking if the profile is valid and message is not null 
             {
-                
+
                 MessageText msg = new MessageText();
                 msg.SenderId = message.SenderId;
                 msg.ReceiverId = message.ReceiverId;
@@ -121,6 +122,25 @@ namespace ChatApp.Infrastructure.ServiceImplementation
                 context.Messages.Add(msg);
                 context.SaveChanges();
             }
+        }
+
+        public IEnumerable<SearchModel> SearchOthers(string searchname, string username)
+        {
+            var profiles = context.Profiles.Where(u => (u.FirstName.StartsWith(searchname) || u.LastName.StartsWith(searchname)) && u.UserName != username);
+            profiles = profiles.OrderBy(u => u.FirstName);
+            var list = new List<SearchModel>();
+            foreach(var profile in profiles)
+            {
+                SearchModel Temp = new SearchModel()
+                {
+                    UserName = profile.UserName,
+                    UserId = profile.Id,
+                    FirstName = profile.FirstName,
+                    LastName = profile.LastName,
+                };
+                list.Add(Temp);
+            }
+            return list;
         }
     }
 }

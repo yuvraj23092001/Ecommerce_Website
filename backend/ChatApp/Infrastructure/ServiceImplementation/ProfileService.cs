@@ -51,13 +51,33 @@ namespace ChatApp.Infrastructure.ServiceImplementation
             return context.Profiles.Any(x => x.Email.ToLower().Trim() == email.ToLower().Trim() || x.UserName.ToLower().Trim() == userName.ToLower().Trim());
         }
 
-        public Profile FetchUser(string username)
+        public UpdateModel GetUser(string username)
         {
             // we will just perform a simple search for username across database 
             // It may return a null value so we will check the value before using it somewhere
-            return (context.Profiles.FirstOrDefault( x => x.UserName.ToLower().Trim() == username.ToLower().Trim()));
+            var profile =  (context.Profiles.FirstOrDefault( x => x.UserName.ToLower().Trim() == username.ToLower().Trim()));
+            if (profile == null)
+            {
+                return null;
+            }
+            var user = new UpdateModel()
+            {
+                UserName = profile.UserName,
+                Email = profile.Email,
+                FirstName = profile.FirstName,
+                LastName = profile.LastName,
+                ProfileImageLocation = profile.ImagePath,
+                LastUpdatedAt = profile.LastUpdatedAt,
+            };
+            return user;
         }
 
+        public Profile FetchUsers(string username)
+        {
+            // we will just perform a simple search for username across database 
+            // It may return a null value so we will check the value before using it somewhere
+            return (context.Profiles.FirstOrDefault(x => x.UserName.ToLower().Trim() == username.ToLower().Trim()));
+        }
         public int FetchUserIdByUsername(string username)
         {   
             Profile user = context.Profiles.FirstOrDefault(profile => profile.UserName == username);
@@ -67,7 +87,7 @@ namespace ChatApp.Infrastructure.ServiceImplementation
         public Profile UpdateUser(UpdateModel updateModel, string userName)
         {
             // first we will have to import data from UpdateModel
-            Profile updateUser = FetchUser(updateModel.UserName);
+            Profile updateUser = FetchUsers(updateModel.UserName);
 
             // we don't have that user in our database so we will delete it.
             if (updateUser == null) {

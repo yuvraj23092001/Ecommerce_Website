@@ -10,8 +10,10 @@ namespace ChatApp.Business.ServiceInterfaces
 
         Profile RegisterUser(RegisterModel regModel);
 
-        Profile FetchUser(string username);
+        UpdateModel GetUser(string username);
 
         Profile UpdateUser(UpdateModel updateModel, string userName);
+
+        public Profile FetchUsers(string username);
     }
 }
