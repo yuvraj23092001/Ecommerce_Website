@@ -49,7 +49,7 @@ namespace ChatApp.Controllers
 
         [HttpGet("GetMessages")]
 
-        public IActionResult Getmsgs(string username, string selusername)
+        public IActionResult Getmsgs([FromQuery]string username, [FromQuery] string selusername)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +67,7 @@ namespace ChatApp.Controllers
 
         [HttpGet("SearchOthers")]
 
-        public IActionResult GetOtherUsers(string searchname, string username)
+        public IActionResult GetOtherUsers([FromQuery]string searchname, [FromQuery]string username)
         {
             if (ModelState.IsValid)
             {

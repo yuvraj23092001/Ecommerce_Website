@@ -7,6 +7,9 @@ import { BaseComponent } from './views/layout/base/base.component';
 import { FooterComponent } from './views/layout/footer/footer.component';
 import { NavbarComponent } from './views/layout/navbar/navbar.component';
 import { SidebarComponent } from './views/layout/sidebar/sidebar.component';
+import { ChatComponent } from './views/layout/chat/chat.component';
+import { ChatService } from './services/chat/chat.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -20,12 +23,32 @@ import { SidebarComponent } from './views/layout/sidebar/sidebar.component';
     BaseComponent,
     FooterComponent,
     NavbarComponent,
-    SidebarComponent
-
+    SidebarComponent,
+    ChatComponent
+ 
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   title = 'ClientApp';
+  conversation :string = null;
+  Messages: string[] = [];
+  
+  private subscription: Subscription;
+
+  constructor(private chatService: ChatService) {
+    this.subscription = this.chatService.Username.subscribe((message) => {
+      
+      this.conversation = "True";
+    });
+  }
+
+  ngOnDestroy() {
+    // Unsubscribe to avoid memory leaks
+    this.subscription.unsubscribe();
+  }
+
+
+  
 }
