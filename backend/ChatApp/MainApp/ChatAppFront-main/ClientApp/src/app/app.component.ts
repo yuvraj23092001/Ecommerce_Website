@@ -8,6 +8,7 @@ import { FooterComponent } from './views/layout/footer/footer.component';
 import { NavbarComponent } from './views/layout/navbar/navbar.component';
 import { SidebarComponent } from './views/layout/sidebar/sidebar.component';
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
