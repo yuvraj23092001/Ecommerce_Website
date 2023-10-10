@@ -1,0 +1,109 @@
+#container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: #e7dfdc;
+    flex-direction: column;
+}
+#container #header {
+    min-height: 67px;
+    background-color: #eee;
+    box-shadow: 2px 0px 4px #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#container #header .avatarSection {
+    display: flex;
+}
+#container #header .avatarSection .picture {
+    min-width: 40px;
+    max-width: 40px;
+    margin: 0 10px;
+}
+#container #header .avatarSection .picture img {
+    max-width: 100%;
+}
+#container #header .avatarSection .nameSection {
+    flex-grow: 1;
+    color: #545454;
+    display: flex;
+    align-items: center;
+}
+#container #header .actionButtons {
+    min-width: 50px;
+    display: flex;
+}
+#container #header .actionButtons img {
+    width: 20px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+#container #body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    flex-direction: column-reverse;
+    padding: 20px 50px;
+    overflow: scroll;
+}
+#container #body .message {
+    margin-top: 10px;
+    display: flex;
+    align-items: flex-start;
+    color: #767676;
+    flex-direction: column;
+}
+#container #body .message .messageContent {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+}
+#container #body .message .messageContent .time {
+    text-align: right;
+    color: #959698;
+    font-size: 13px;
+    margin-top: 5px;
+}
+#container #body .message.me {
+    align-items: flex-end;
+}
+#container #body .message.me .messageContent {
+    background-color: #dcf7c5;
+}
+#container #footer {
+    min-height: 67px;
+    background-color: #f0eeed;
+    display: flex;
+}
+#container #footer #smileyIcon {
+    flex-basis: 50px;
+}
+#container #footer #textarea {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+#container #footer #textarea textarea {
+    width: 100%;
+    height: 45px;
+    border: 0px;
+    border-radius: 4px;
+    resize: none;
+    outline: none;
+    padding: 14px;
+    font-family: sans-serif;
+    box-sizing: border-box;
+}
+#container #footer #micIcon {
+    flex-basis: 50px;
+}
+#container #footer #micIcon, #container #footer #smileyIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#container #footer #micIcon img, #container #footer #smileyIcon img {
+    max-width: 40%;
+    cursor: pointer;
+}

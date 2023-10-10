@@ -10,6 +10,7 @@ import { SidebarComponent } from './views/layout/sidebar/sidebar.component';
 import { ChatComponent } from './views/layout/chat/chat.component';
 import { ChatService } from './services/chat/chat.service';
 import { Subscription } from 'rxjs';
+import { NgxEmojiPickerModule } from 'ngx-emoji-picker';
 
 
 @Component({
@@ -24,7 +25,8 @@ import { Subscription } from 'rxjs';
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
-    ChatComponent
+    ChatComponent,
+    
  
   ],
   templateUrl: './app.component.html',

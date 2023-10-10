@@ -1,8 +1,13 @@
 ﻿using ChatApp.Business.ServiceInterfaces;
+using ChatApp.Context;
 using ChatApp.Models.MessageModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualBasic.FileIO;
+using System.Data;
 
 namespace ChatApp.Controllers
 {
@@ -11,24 +16,27 @@ namespace ChatApp.Controllers
     public class ChatController : ControllerBase
     {
         private readonly IChatService chatService;
+        private readonly ChatAppContext context;
 
-        public ChatController(IChatService chatService) { 
-          this.chatService = chatService;
+        public ChatController(IChatService chatService, ChatAppContext context)
+        {
+            this.chatService = chatService;
+            this.context = context;
         }
 
         [HttpPost("Addmsg")]
         public IActionResult Addmsg([FromForm] TextMessageModel message)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                if(message == null)
+                if (message == null)
                 {
                     return BadRequest(new { Message = "Cannot send a empty message." });
                 }
                 chatService.SendMessage(message);
                 return Ok(new { Message = "message added succesfully." });
             }
-            return BadRequest(new { Message = "Model State is not valid."});
+            return BadRequest(new { Message = "Model State is not valid." });
         }
 
         [HttpPost("Addreplymsg")]
@@ -40,7 +48,7 @@ namespace ChatApp.Controllers
                 {
                     return BadRequest(new { Message = "Cannot send a empty message." });
                 }
-                chatService.ReplyMessage(message,messageId);
+                chatService.ReplyMessage(message, messageId);
                 return Ok(new { Message = "message added succesfully." });
             }
             return BadRequest(new { Message = "Model State is not valid." });
@@ -49,8 +57,44 @@ namespace ChatApp.Controllers
 
         [HttpGet("GetMessages")]
 
-        public IActionResult Getmsgs([FromQuery]string username, [FromQuery] string selusername)
+        public async Task<IActionResult> Getmsgs([FromQuery] string username, [FromQuery] string selusername)
         {
+            /*try
+            {
+                string connectionString = "conn";
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_UpdateUsersFromAPI", connection))
+                    {
+                        // Open connection when applicable
+                        if (connection.State != ConnectionState.Open)
+                            await connection.OpenAsync();
+
+                        // Configure command
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        
+                        // parameter set kar diye
+                        cmd.Parameters.Add(new SqlParameter("@PrimaryEmail", 2));
+
+                        // Execute command
+                        var res = cmd.ExecuteScalar();
+
+                        // res.HasRows;
+                        // res.Read()
+
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                log.LogInformation(ex.ToString());
+                LogExceptionInDb(ex, "Save External Experts", log);
+                AddExceptionIfNotExists(ex.Message, "SaveExternalExpert");
+            }
+*/
+
+
             if (ModelState.IsValid)
             {
                 var MessageList = chatService.GetMessages(username, selusername);
@@ -67,7 +111,7 @@ namespace ChatApp.Controllers
 
         [HttpGet("SearchOthers")]
 
-        public IActionResult GetOtherUsers([FromQuery]string searchname, [FromQuery]string username)
+        public IActionResult GetOtherUsers([FromQuery] string searchname, [FromQuery] string username)
         {
             if (ModelState.IsValid)
             {
@@ -83,9 +127,18 @@ namespace ChatApp.Controllers
             return BadRequest(new { Message = "Model State is not valid." });
         }
 
+        [HttpGet("Recent Messages")]
+        
+        public IActionResult GetConversations([FromHeader]int userId)
+        {
+            var conversations = context.ConversationResults.FromSqlRaw("EXEC dbo.GetAllConversationByUserId @p0", userId).ToList();
+            return Ok(conversations);
+        }
+
         [HttpDelete("DeleteMessage")]
 
-        public IActionResult Delete(int MessageId) {
+        public IActionResult Delete(int MessageId)
+        {
             if (ModelState.IsValid)
             {
                 chatService.DeleteMessage(MessageId);

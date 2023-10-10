@@ -53,8 +53,9 @@ namespace ChatApp.Infrastructure.ServiceImplementation
                 
                 var obj = new TextMessageModel();
                 // will update if needed 
-                obj.SenderId = userId == content.SenderId ? content.SenderId : content.ReceiverId;
-                obj.ReceiverId = userId == content.ReceiverId ? content.ReceiverId : content.SenderId ;
+                
+                obj.SenderId = userId == content.SenderId ? userId: seluserId;
+                obj.ReceiverId = seluserId == content.ReceiverId ? seluserId : userId ;
                 obj.Content = content.Content;
                 obj.DateTime = content.DateTime;
                 // Now implement the IsSeen for both senerios 

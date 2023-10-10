@@ -1,13 +1,14 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, NgModule, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbActiveModal, NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { ChatService } from 'src/app/services/chat/chat.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule,NgbModule],
+  imports: [CommonModule,NgbModule,FormsModule],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
@@ -16,7 +17,7 @@ export class SidebarComponent {
   // @ViewChild('basicModal') basicModal: any;
   
    profileImageUrl = '../../assets/images/noPic.svg';
-   
+   searchText: string;
  
   conversations = [
     {name: "ring", time:"8:21", latestMessage: "Good Morning!" , latestMessageRead: false, },
@@ -49,6 +50,19 @@ export class SidebarComponent {
        },
        (err) => {console.log(err);});
        
+  }
+  
+  get filteredConversations() {
+    return this.conversations.filter((conversation) => {
+      return (
+        conversation.name
+          .toLowerCase()
+          .includes(this.searchText.toLowerCase()) ||
+        conversation.latestMessage
+          .toLowerCase()
+          .includes(this.searchText.toLowerCase())
+      );
+    });
   }
 
 }
