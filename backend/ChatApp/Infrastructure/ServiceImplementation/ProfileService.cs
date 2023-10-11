@@ -138,7 +138,7 @@ namespace ChatApp.Infrastructure.ServiceImplementation
                 }
                 
                 // add the new image saved path in profile entity 
-                updateUser.ImagePath = "/Images/Users/"+FileName+extension;
+                updateUser.ImagePath = environment.WebRootPath + "/Images/Users/"+FileName+extension;
 
             }
 

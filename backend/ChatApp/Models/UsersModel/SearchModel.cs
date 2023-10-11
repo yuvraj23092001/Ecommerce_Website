@@ -8,8 +8,11 @@ namespace ChatApp.Models.UsersModel
 
         public int  UserId { get; set; }
 
-        public string FirstName { get; set; }
+        public string firstName { get; set; }
         
-        public string LastName { get; set; }
+        public DateTime dateTime { get; set; }
+
+        public string content { get; set; }
+
     }
 }

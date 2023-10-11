@@ -1,12 +1,15 @@
 ﻿using ChatApp.Business.ServiceInterfaces;
 using ChatApp.Context;
+using ChatApp.Context.EntityClasses;
 using ChatApp.Models.MessageModel;
+using ChatApp.Models.UsersModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.VisualBasic.FileIO;
+using System;
 using System.Data;
 
 namespace ChatApp.Controllers
@@ -113,27 +116,51 @@ namespace ChatApp.Controllers
 
         public IActionResult GetOtherUsers([FromQuery] string searchname, [FromQuery] string username)
         {
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
+            //{
+            //    var searchModels = chatService.SearchOthers(searchname, username);
+
+            //    if (searchModels.IsNullOrEmpty())
+            //    {
+            //        return Ok(new { Message = "No User With Given Name.", searchModels });
+            //    }
+
+            //    return Ok(searchModels);
+            //}
+            //return BadRequest(new { Message = "Model State is not valid." });
+
+            var searchModels = chatService.SearchOthers(searchname, username);
+
+            if (searchModels.IsNullOrEmpty())
             {
-                var searchModels = chatService.SearchOthers(searchname, username);
-
-                if (searchModels.IsNullOrEmpty())
-                {
-                    return BadRequest(new { Message = "No User With Given Name." });
-                }
-
-                return Ok(searchModels);
+                return Ok(new { Message = "No User With Given Name.", searchModels });
             }
-            return BadRequest(new { Message = "Model State is not valid." });
+
+            return Ok(searchModels);
         }
 
-        [HttpGet("Recent Messages")]
+        [HttpGet("RecentMessages")]
         
-        public IActionResult GetConversations([FromHeader]int userId)
+        public IActionResult GetConversations([FromQuery]string userName)
         {
-            var conversations = context.ConversationResults.FromSqlRaw("EXEC dbo.GetAllConversationByUserId @p0", userId).ToList();
+            var usrId = chatService.FetchUserIdByUsername(userName);
+            var conversations = context.ConversationResults.FromSqlRaw("EXEC dbo.GetAllConversationByUserId @p0", usrId).ToList();
             return Ok(conversations);
+
+
         }
+
+        [HttpGet("RecentMessagesssss")]
+
+        public IActionResult GetConversati([FromQuery] int usrId , [FromQuery] int otherId)
+        {
+
+            var conversations = context.ConversationResults.FromSqlRaw("EXEC dbo.GetAllConversationByUserIdsBoth @UserID, @OtherID", new SqlParameter("UserID", usrId), new SqlParameter("OtherID", otherId));
+            return Ok(conversations);
+
+
+        }
+
 
         [HttpDelete("DeleteMessage")]
 

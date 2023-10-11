@@ -3,6 +3,9 @@ using ChatApp.Context;
 using ChatApp.Context.EntityClasses;
 using ChatApp.Models.MessageModel;
 using ChatApp.Models.UsersModel;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Reflection.Metadata;
 
 namespace ChatApp.Infrastructure.ServiceImplementation
@@ -82,7 +85,7 @@ namespace ChatApp.Infrastructure.ServiceImplementation
 
         public int FetchUserIdByUsername(string username)
         {
-            Profile user = context.Profiles.FirstOrDefault(profile => profile.UserName == username);
+            Profile user = context.Profiles.FirstOrDefault(profile => profile.UserName == username );
             return user.Id;
         }
 
@@ -127,18 +130,32 @@ namespace ChatApp.Infrastructure.ServiceImplementation
 
         public IEnumerable<SearchModel> SearchOthers(string searchname, string username)
         {
-            var profiles = context.Profiles.Where(u => (u.FirstName.StartsWith(searchname) || u.LastName.StartsWith(searchname)) && u.UserName != username);
+            var profiles = context.Profiles.Where(u => (u.FirstName.StartsWith(searchname) || u.LastName.StartsWith(searchname) || u.UserName.StartsWith(searchname) )&& u.UserName != username);
             profiles = profiles.OrderBy(u => u.FirstName);
             var list = new List<SearchModel>();
+
             foreach(var profile in profiles)
             {
+                var usrId = FetchUserIdByUsername(username);
+                var otherId = profile.Id;
+                var conversations = context.ConversationResults.FromSqlRaw("EXEC dbo.GetAllConversationByUserIdsBoth @UserID, @OtherID", new SqlParameter("UserID", usrId), new SqlParameter("OtherID", otherId)).ToList();
+                var tocontent = "";
+                var toDateTime = DateTime.Now;
+                if (conversations.Any())
+                {
+                    tocontent = conversations.ElementAt(0).Content;
+                    toDateTime = conversations.ElementAt(0).DateTime;
+                }
+                    /*.ElementAt(0);*/
                 SearchModel Temp = new SearchModel()
                 {
                     UserName = profile.UserName,
                     UserId = profile.Id,
-                    FirstName = profile.FirstName,
-                    LastName = profile.LastName,
-                };
+                    firstName = profile.FirstName,
+                    content = tocontent,
+                    dateTime = toDateTime
+                    
+            };
                 list.Add(Temp);
             }
             return list;

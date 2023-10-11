@@ -20,34 +20,39 @@
       </div>
       <div id="searchBox">
         <img width="19" src="../../assets/images/searchIcon.svg" />
-        <input type="text" [(ngModel)]="searchText" placeholder="Search or start the new chat" />
+        <input type="text" (keyup)="search($event)" placeholder="Search or start the new chat" />
+        <ul *ngIf="results" class="search-results">
+          <li *ngFor=" let result of results">
+            {{result.userName}}
+          </li>
+        </ul>
       </div>
     </div>
   
     <div id="sidebarContent">
       <!-- <div id="noConversations">All chats are archived</div> -->
   
-      <div class="conversation" *ngFor="let conversation of !searchText ? conversations : filteredConversations"
-       (click)="onClick(conversation.name)"
+      <div class="conversation" *ngFor="let conversation of  conversations"
+       (click)="onClick(conversation.userName)"
       >
         <div class="picture">
           <img src="../../assets/images/noPic.svg" />
         </div>
         <div class="content">
           <div class="conversationHeader">
-            <div class="name">{{ conversation.name }}</div>
-            <div class="time">{{ conversation.time }}</div>
+            <div class="name">{{ conversation.userName }} ( {{conversation.firstName}} )</div>
+            <div class="time">{{ recentChatDate(conversation.dateTime) }}</div>
           </div>
           <div class="message">
-            <img
+            <!-- <img
               *ngIf="!conversation.latestMessageRead"
               src="../../assets/images/doubleTick.svg"
             />
             <img
               *ngIf="conversation.latestMessageRead"
               src="../../assets/images/doubleTickBlue.svg"
-            />
-            {{ conversation.latestMessage }}
+            /> -->
+            {{ conversation.content }}
           </div>
         </div>
       </div>

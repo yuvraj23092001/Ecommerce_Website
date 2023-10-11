@@ -19,4 +19,19 @@ export class ChatService {
     console.log(`${this.baseUrl}/GetMessages?username=${userObj}&selusername=${otherObj}`)
     return this.http.get<any>(`${this.baseUrl}/GetMessages?username=${userObj}&selusername=${otherObj}`);
   }
+
+  // Search bar 
+  SearchOthers(userObj:string,otheruserObj:string){
+     return this.http.get<any>(`${this.baseUrl}/SearchOthers?searchname=${otheruserObj}&username=${userObj}`);
+  }
+
+  // Recent Messages 
+  RecentMessages(userObj:string):Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/RecentMessages`,
+    {
+      params: {
+        userName : userObj
+      }
+    });
+  }
 }

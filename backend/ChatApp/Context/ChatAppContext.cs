@@ -14,6 +14,7 @@ namespace ChatApp.Context
         {
             // Map stored procedure
             modelBuilder.Entity<ConversationResult>().HasNoKey().ToView("GetAllConversationByUserId");
+            modelBuilder.Entity<ConversationResult>().HasNoKey().ToView("GetAllConversationByUserIdsBoth");
         }
         public virtual DbSet<Profile> Profiles { get; set; }
 
