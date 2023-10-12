@@ -28,7 +28,7 @@ namespace ChatApp.Controllers
         }
 
         [HttpPost("Addmsg")]
-        public IActionResult Addmsg([FromForm] TextMessageModel message)
+        public IActionResult Addmsg([FromBody] TextMessageModel message)
         {
             if (ModelState.IsValid)
             {
@@ -62,41 +62,7 @@ namespace ChatApp.Controllers
 
         public async Task<IActionResult> Getmsgs([FromQuery] string username, [FromQuery] string selusername)
         {
-            /*try
-            {
-                string connectionString = "conn";
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    using (SqlCommand cmd = new SqlCommand("sp_UpdateUsersFromAPI", connection))
-                    {
-                        // Open connection when applicable
-                        if (connection.State != ConnectionState.Open)
-                            await connection.OpenAsync();
-
-                        // Configure command
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        
-                        // parameter set kar diye
-                        cmd.Parameters.Add(new SqlParameter("@PrimaryEmail", 2));
-
-                        // Execute command
-                        var res = cmd.ExecuteScalar();
-
-                        // res.HasRows;
-                        // res.Read()
-
-
-                    }
-                }
-            }
-            catch (SqlException ex)
-            {
-                log.LogInformation(ex.ToString());
-                LogExceptionInDb(ex, "Save External Experts", log);
-                AddExceptionIfNotExists(ex.Message, "SaveExternalExpert");
-            }
-*/
-
+           
 
             if (ModelState.IsValid)
             {
@@ -116,18 +82,6 @@ namespace ChatApp.Controllers
 
         public IActionResult GetOtherUsers([FromQuery] string searchname, [FromQuery] string username)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    var searchModels = chatService.SearchOthers(searchname, username);
-
-            //    if (searchModels.IsNullOrEmpty())
-            //    {
-            //        return Ok(new { Message = "No User With Given Name.", searchModels });
-            //    }
-
-            //    return Ok(searchModels);
-            //}
-            //return BadRequest(new { Message = "Model State is not valid." });
 
             var searchModels = chatService.SearchOthers(searchname, username);
 
@@ -145,6 +99,7 @@ namespace ChatApp.Controllers
         {
             var usrId = chatService.FetchUserIdByUsername(userName);
             var conversations = context.ConversationResults.FromSqlRaw("EXEC dbo.GetAllConversationByUserId @p0", usrId).ToList();
+            // conversations.Reverse();
             return Ok(conversations);
 
 
@@ -175,6 +130,16 @@ namespace ChatApp.Controllers
 
         }
 
+        [HttpGet("GetUserId")]
+
+        public IActionResult GetUserId(string userName) {
+            if (ModelState.IsValid)
+            {
+                var id = chatService.FetchUserIdByUsername(userName);
+                return Ok(id);
+            }
+            return BadRequest(new { Message = "Model State is not valid." });
+        }
 
     }
 }

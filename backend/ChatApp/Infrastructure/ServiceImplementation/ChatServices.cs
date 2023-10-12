@@ -29,10 +29,10 @@ namespace ChatApp.Infrastructure.ServiceImplementation
                 MessageText msg = new MessageText();
                 msg.SenderId = message.SenderId;
                 msg.ReceiverId = message.ReceiverId;
-                msg.IsReply = false;
-                msg.ReplyedToId = (int)message.ReplyedToId;
+                msg.IsReply = message.ReplyedToId == 0 ? false : true;
+                msg.ReplyedToId = message.ReplyedToId;
                 msg.Content = message.Content;
-                msg.IsSeen = (bool)message.IsSeen;
+                msg.IsSeen = false;
                 msg.DateTime = DateTime.Now;
                 context.Messages.Add(msg);
                 context.SaveChanges();

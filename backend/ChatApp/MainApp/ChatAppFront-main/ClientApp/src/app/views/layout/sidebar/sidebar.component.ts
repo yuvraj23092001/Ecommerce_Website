@@ -29,7 +29,12 @@ export class SidebarComponent {
         console.log(data);
      });
 
-
+     this.chatService.Message.subscribe((data)=>{
+         this.chatService.RecentMessages(data).subscribe((recent)=>{
+            this.conversations = recent;
+            console.log(recent);
+         })
+     })
 
      this.searchTerms.pipe(
       debounceTime(500),
@@ -48,7 +53,9 @@ export class SidebarComponent {
      })
   }
   
-  
+  recentChatDate(date :Date){
+    return this.chatService.recentChatDate(date);
+  }
 
   openBasicModal(content: any) {
     this.modalService.open(content, {}).result.then((result) => {
@@ -65,27 +72,7 @@ export class SidebarComponent {
 
   }
   
-  // function to get how long ago message was sent
-  recentChatDate(date: Date): string {
-    const recievedDate = new Date(date)
-    const today = new Date();
-    let curDate = recievedDate.getDate();
-    let curMonth = recievedDate.getMonth();
-    let curYear = recievedDate.getFullYear()
-    if (
-      curDate === today.getDate() &&
-      curMonth === today.getMonth() &&
-      curYear === today.getFullYear()
-    ) {
-      // Date is same as today, return time
-      const hours = recievedDate.getHours().toString().padStart(2, '0');
-      const minutes = recievedDate.getMinutes().toString().padStart(2, '0');
-      return `${hours}:${minutes}`;
-    } else {
-      // Date is different from today, return full date
-      return `${curDate}/${curMonth}/${curYear}`;
-    }
-  }
+  
   
   search(term: Event): void {
     const event = (term.target as HTMLInputElement).value;
