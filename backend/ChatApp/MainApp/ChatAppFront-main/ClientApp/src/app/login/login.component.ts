@@ -4,6 +4,7 @@ import { FormBuilder,FormControl,FormGroup,Validator, Validators } from '@angula
 import { AuthService } from '../services/auth/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
@@ -25,11 +26,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private auth:AuthService,
-    private router :Router
+    private router :Router,
+    private cookieService : CookieService
   ) {}
   
   ngOnInit() {
-    console.log("hiiii")
+    
     this.auth.setShowToolbar(false);
     this.loginForm = this.fb.group({
       EmailAddress: ['', Validators.required],
@@ -57,12 +59,14 @@ export class LoginComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.loginForm.valid) {
       console.log(this.loginForm.value);
-      this.auth.login(this.loginForm.value).subscribe({
-        next: (res) => {
-              this.router.navigate(['/home']);
-      },
+      this.auth.login(this.loginForm.value).subscribe(
+         (res) => {
+              this.cookieService.set('Authorization',`Bearer ${res.token}`,undefined,'/',undefined,true,'Strict');
+              localStorage.setItem('res','fjhgj');
+             // this.router.navigate(['/home']);
+      }
       
-      });
+      );
 
      
     } else { 

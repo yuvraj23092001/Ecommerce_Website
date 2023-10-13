@@ -6,11 +6,13 @@ namespace ChatApp.Business.ServiceInterfaces
 {
     public interface IProfileService
     {
-        Profile CheckPassword(LoginModel loginModel);
+        string CheckPassword(LoginModel loginModel);
 
-        Profile RegisterUser(RegisterModel regModel);
+        string RegisterUser(RegisterModel regModel);
 
         UpdateModel GetUser(string username);
+
+        public string GenerateJSONWebToken(Profile profileInfo);
 
         Profile UpdateUser(UpdateModel updateModel, string userName);
 

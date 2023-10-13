@@ -3,6 +3,7 @@ using ChatApp.Context;
 using ChatApp.Context.EntityClasses;
 using ChatApp.Models.MessageModel;
 using ChatApp.Models.UsersModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -16,6 +17,7 @@ namespace ChatApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ChatController : ControllerBase
     {
         private readonly IChatService chatService;

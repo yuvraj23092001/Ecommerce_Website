@@ -8,6 +8,7 @@
         public const string LastNameClaim = "lastName";
         public const string ImagePathClaim = "imagePath";
         public const string DesignationClaim = "designation";
+       
 
     }
 

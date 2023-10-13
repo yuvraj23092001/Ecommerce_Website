@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { ViewProfile } from 'src/app/interfaces/view-profile';
+import { ViewProfile } from 'src/app/models/view-profile';
 @Component({
   selector: 'app-view-profile',
   standalone: true,

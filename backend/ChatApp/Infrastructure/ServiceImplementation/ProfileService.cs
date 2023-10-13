@@ -4,6 +4,10 @@ using ChatApp.Context;
 using ChatApp.Context.EntityClasses;
 using ChatApp.Models.UsersModel;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace ChatApp.Infrastructure.ServiceImplementation
 {
@@ -11,19 +15,23 @@ namespace ChatApp.Infrastructure.ServiceImplementation
     {
         private readonly ChatAppContext context;
         private readonly IWebHostEnvironment environment;
+        private readonly IConfiguration _config;
 
-        public ProfileService(ChatAppContext context, IWebHostEnvironment environment)
+        public ProfileService(ChatAppContext context, IWebHostEnvironment environment, IConfiguration config)
         {
             this.context = context;
             this.environment = environment;
+            _config = config;
         }
-        public Profile CheckPassword(LoginModel model)
+        public string CheckPassword(LoginModel model)
         {
-            return this.context.Profiles.FirstOrDefault(x => model.Password == x.Password
+            var user = this.context.Profiles.FirstOrDefault(x => model.Password == x.Password
             && (x.Email.ToLower().Trim() == model.EmailAddress.ToLower().Trim() || x.UserName.ToLower().Trim() == model.Username.ToLower().Trim()));
+            if (user == null) { return null; }
+            return GenerateJSONWebToken(user);
         }
 
-        public Profile RegisterUser(RegisterModel regModel)
+        public string RegisterUser(RegisterModel regModel)
         {
             Profile newUser = null;
             if (!CheckEmailOrUserNameExists(regModel.UserName, regModel.Email))
@@ -43,9 +51,31 @@ namespace ChatApp.Infrastructure.ServiceImplementation
                 context.Profiles.Add(newUser);
                 context.SaveChanges();
             }
-            return newUser;
+            return GenerateJSONWebToken(newUser);
         }
 
+        public string GenerateJSONWebToken(Profile profileInfo)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[] {
+                    new Claim(JwtRegisteredClaimNames.Sub, profileInfo.UserName),
+                    new Claim(JwtRegisteredClaimNames.Email, profileInfo.Email),
+                    new Claim(ClaimsConstant.FirstNameClaim, profileInfo.FirstName),
+                    new Claim(ClaimsConstant.LastNameClaim, profileInfo.LastName),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(ClaimsConstant.ImagePathClaim, profileInfo.ImagePath)
+
+        };
+            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+            _config["Jwt:Issuer"],
+            claims,
+            expires: DateTime.Now.AddMinutes(120),
+            signingCredentials: credentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
         private bool CheckEmailOrUserNameExists(string userName, string email)
         {
             return context.Profiles.Any(x => x.Email.ToLower().Trim() == email.ToLower().Trim() || x.UserName.ToLower().Trim() == userName.ToLower().Trim());

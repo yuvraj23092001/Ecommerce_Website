@@ -33,7 +33,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
                  };
 
-                 options.SecurityTokenValidators.Clear();
+                // options.SecurityTokenValidators.Clear();
                  
              }
              
@@ -90,11 +90,7 @@ builder.Services.AddSpaStaticFiles(configuration =>
 {
     configuration.RootPath = "MainApp/dist";
 });
-// Uncomment this to enable template app.
-//services.AddSpaStaticFiles(configuration =>
-//{
-//    configuration.RootPath = "ClientApp/dist";
-//});
+
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -116,7 +112,7 @@ else
 }
 
 
-//app.UseSwagger();
+// app.UseSwagger();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseDefaultFiles();
@@ -143,21 +139,6 @@ app.UseSwaggerUI(c =>
 //app.UseSpa(spa =>
 //{
 //    spa.Options.SourcePath = "MainApp";
-
-//    if (env.IsDevelopment())
-//    {
-//        spa.UseAngularCliServer(npmScript: "start");
-//    }
-//});
-
-// Uncomment this to enable template app.
-
-//app.UseSpa(spa =>
-//{
-//    // To learn more about options for serving an Angular SPA from ASP.NET Core,
-//    // see https://go.microsoft.com/fwlink/?linkid=864501
-
-//    spa.Options.SourcePath = "ClientApp";
 
 //    if (env.IsDevelopment())
 //    {

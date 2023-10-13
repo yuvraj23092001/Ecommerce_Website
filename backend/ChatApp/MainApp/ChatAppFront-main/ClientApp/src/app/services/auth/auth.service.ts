@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ViewProfile } from '../../interfaces/view-profile';
-import { EditProfile } from '../../interfaces/edit-profile';
+import { ViewProfile } from '../../models/view-profile';
+import { EditProfile } from '../../models/edit-profile';
+import { Login } from 'src/app/models/login.model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +28,8 @@ export class AuthService {
     return this.http.post<any>(`${this.baseUrl}/Register`,userObj);
   }
   
-  login(loginObj:any):Observable<any>{
-    return this.http.post<any>(`${this.baseUrl}/Login`,loginObj);
+  login(loginObj:any):Observable<Login>{
+    return this.http.post<Login>(`${this.baseUrl}/Login`,loginObj);
   }
   
   viewProfile(profileObj : string):Observable<ViewProfile>{
@@ -39,14 +40,6 @@ export class AuthService {
 
   }
   
-//   signUp(userObj:any): Observable<any>{
-//     return this.http.post<any>("http://localhost:3000/Register",userObj)
-//   }
 
-//   login(loginObj:any):Observable<any>{
-//     console.log("gg", loginObj)
-//     return this.http.post<any>("http://localhost:3000/User",loginObj)
-
-// }
 }
 

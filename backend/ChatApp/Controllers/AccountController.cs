@@ -15,7 +15,6 @@ namespace ChatApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
     public class AccountController : ControllerBase
     {
         private IConfiguration _config;
@@ -26,18 +25,19 @@ namespace ChatApp.Controllers
             _profileService = profileService;
         }
 
+        
         [HttpPost("Login")]
         public IActionResult Login([FromBody] LoginModel loginModel)
         {
             if (ModelState.IsValid)
             {
                 IActionResult response = Unauthorized(new { Message = "Invalid Credentials." });
-                var user = _profileService.CheckPassword(loginModel);
+                var tokenString = _profileService.CheckPassword(loginModel);
 
-                if (user != null)
+                if (tokenString != null)
                 {
-                    var tokenString = GenerateJSONWebToken(user);
-                    response = Ok(new { token = tokenString });
+                    
+                    response = Ok(new { token = tokenString  , username = loginModel.Username });
                 }
 
                 return response;
@@ -52,11 +52,11 @@ namespace ChatApp.Controllers
             // we will also check if the state is valid or not. 
             if (ModelState.IsValid)
             {
-                var user = _profileService.RegisterUser(registerModel);
-                if (user != null)
+                var tokenString = _profileService.RegisterUser(registerModel);
+                if (tokenString != null)
                 {
-                    var tokenString = GenerateJSONWebToken(user);
-                    return Ok(new { token = tokenString, user = user });
+                   
+                    return Ok(new { token = tokenString });
                 }
                 return BadRequest(new { Message = "User Already Exists. Please use different email and UserName." });
             }
@@ -64,7 +64,7 @@ namespace ChatApp.Controllers
         }
 
         // Creating a post method to update user information 
-
+        [Authorize]
         [HttpPost("update-user")]
         public IActionResult UpdateUserProfile([FromForm] UpdateModel updateModel, [FromHeader] string UserName)
         {
@@ -81,6 +81,7 @@ namespace ChatApp.Controllers
 
         }
 
+        [Authorize]
         [HttpGet("get-user")]
 
         public IActionResult GetUserProfile([FromQuery]string UserName)
@@ -94,7 +95,7 @@ namespace ChatApp.Controllers
             return BadRequest(ModelState);
         }
 
-        private string GenerateJSONWebToken(Profile profileInfo)
+        /*private string GenerateJSONWebToken(Profile profileInfo)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -114,7 +115,7 @@ namespace ChatApp.Controllers
             signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+        }*/
 
 
     }
