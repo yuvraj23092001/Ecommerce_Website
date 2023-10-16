@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { ChatService } from 'src/app/services/chat/chat.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 
 @Component({
@@ -19,17 +20,31 @@ export class ChatComponent {
   conversations = [
   ];
   currentUserId :any = 1;
-  userName : string;
+  currentUserName : any;
+  otheruserName : string;
   userId : string ;
-  constructor(private chatService :ChatService) {}
+  constructor(private chatService :ChatService, private authService : AuthService) {}
 
   ngOnInit(): void {
+    this.authService.user().subscribe((username) => {
+      this.currentUserName = username;
+    })
+    
+    this.currentUserName = this.authService.getUser();
+    //  console.log(this.currentUserName);
+
+    this.chatService.GetUserId(this.currentUserName).subscribe((id)=>{
+      this.currentUserId = id;
+      //  console.log(this.currentUserId);
+   })
+   
+   
     this.chatService.Username.subscribe(data => {
-     this.userName = data;
-     this.chatService.GetUserId(this.userName).subscribe((id)=>{
+     this.otheruserName = data;
+     this.chatService.GetUserId(this.otheruserName).subscribe((id)=>{
         this.userId = id;
      })
-     this.chatService.viewMessages('ring',data).subscribe((message)=>{
+     this.chatService.viewMessages(this.currentUserName,data).subscribe((message)=>{
         this.conversations = message.reverse();
         console.log(this.conversations);
      })
@@ -41,16 +56,20 @@ export class ChatComponent {
     let value = event.target.value.trim();
     this.message = '';
     if (value.length < 1) return false;
-
+    console.log("hei");
+    console.log(this.currentUserId);
+    console.log(this.currentUserName);
+    console.log(this.otheruserName);
 
     console.log(value);
+    
     this.chatService.sendMessage(this.currentUserId,this.userId,value,0).subscribe((data)=>{
-      console.log(data);
-      this.chatService.viewMessages('ring',this.userName).subscribe((message)=>{
-        this.conversations = message.reverse();
-        console.log(this.conversations);
-     })
-       this.chatService.Message.next('ring');
+      // console.log(data);
+      // this.chatService.viewMessages(this.currentUserName,this.otheruserName).subscribe((message)=>{
+      //   this.conversations = message.reverse();
+      //   console.log(this.conversations);
+    //  })
+       this.chatService.Message.next(this.currentUserName);
     });
     
 

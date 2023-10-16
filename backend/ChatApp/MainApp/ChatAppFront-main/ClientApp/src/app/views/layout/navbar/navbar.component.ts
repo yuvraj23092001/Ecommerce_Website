@@ -3,6 +3,7 @@ import { CommonModule, DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
 import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from 'src/app/shared/shared/shared.module';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -23,10 +24,12 @@ export class NavbarComponent implements OnInit {
   constructor(
     @Inject(DOCUMENT) private document: Document, 
     private renderer: Renderer2,
-    private router: Router
+    private router: Router,
+    private authService : AuthService
   ) { }
   
   ngOnInit(): void {
+
   }
 
   /**
@@ -42,10 +45,13 @@ export class NavbarComponent implements OnInit {
    */
   onLogout(e:any) {
     e.preventDefault();
-    localStorage.removeItem('isLoggedin');
+    console.log(" hi ");
+    this.authService.logout();
+    this.router.navigate['/login'];
+  }
 
-    if (!localStorage.getItem('isLoggedin')) {
-      this.router.navigate(['/auth/login']);
-    }
+  onEdit(e:any){
+    e.preventDefault();
+    this.router.navigate['/edit-profile'];
   }
 }

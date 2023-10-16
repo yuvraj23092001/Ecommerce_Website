@@ -10,7 +10,7 @@ import { CookieService } from 'ngx-cookie-service';
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule,RouterModule,ReactiveFormsModule],
-  providers:[AuthService,],
+  providers:[AuthService,CookieService],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
@@ -61,9 +61,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       console.log(this.loginForm.value);
       this.auth.login(this.loginForm.value).subscribe(
          (res) => {
-              this.cookieService.set('Authorization',`Bearer ${res.token}`,undefined,'/',undefined,true,'Strict');
-              localStorage.setItem('res','fjhgj');
-             // this.router.navigate(['/home']);
+              this.cookieService.set('Authorization',`${res.token}`);
+              this.auth.setUser(res.username);
+              
+              this.router.navigate(['/home']);
       }
       
       );

@@ -32,7 +32,6 @@ export class SidebarComponent {
      this.chatService.Message.subscribe((data)=>{
          this.chatService.RecentMessages(data).subscribe((recent)=>{
             this.conversations = recent;
-            console.log(recent);
          })
      })
 
