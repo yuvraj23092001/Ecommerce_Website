@@ -1,6 +1,6 @@
 import { Component, HostListener, NgModule, ViewChild  ,ElementRef} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgbActiveModal, NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { ChatService } from 'src/app/services/chat/chat.service';
 import { FormsModule } from '@angular/forms';

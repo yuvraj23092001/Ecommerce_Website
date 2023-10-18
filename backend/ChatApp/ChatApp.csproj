@@ -37,6 +37,9 @@
   <ItemGroup>
     <Folder Include="ClientApp\" />
     <Folder Include="MainApp\" />
+    <Folder Include="wwwroot\chat\audio\" />
+    <Folder Include="wwwroot\chat\images\" />
+    <Folder Include="wwwroot\chat\videos\" />
     <Folder Include="wwwroot\Images\Users\" />
   </ItemGroup>
 

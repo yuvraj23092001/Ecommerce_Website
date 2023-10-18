@@ -29,6 +29,9 @@ namespace ChatApp.Context.EntityClasses
 
         public bool IsReply { get; set; } = false;
 
-        public int? ReplyedToId { get; set; } 
+        public int? ReplyedToId { get; set; }
+
+        public string Type { get; set; } = null;
+
     }
 }

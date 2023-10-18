@@ -98,12 +98,33 @@
 #container #footer #micIcon {
     flex-basis: 50px;
 }
-#container #footer #micIcon, #container #footer #smileyIcon {
+#container #footer #micIcon, #container #footer #smileyIcon ,#container #footer #fileIcon {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-#container #footer #micIcon img, #container #footer #smileyIcon img {
+#container #footer #micIcon img, #container #footer #smileyIcon img , #container #footer #fileIcon img {
     max-width: 40%;
     cursor: pointer;
+}
+
+#container #footer #fileIcon {
+    flex-basis: 50px;
+}
+
+
+
+#container #footer #smileyIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#container #footer #smileyIcon img {
+    max-width: 40%;
+    cursor: pointer;
+}
+
+#container #footer #smileyIcon {
+    flex-basis: 50px;
 }

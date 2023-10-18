@@ -20,5 +20,7 @@ namespace ChatApp.Models.MessageModel
         public bool? IsReply { get; set; } = false;
 
         public int? ReplyedToId { get; set; } = 0;
+
+        public string Type { get; set; } 
     }
 }

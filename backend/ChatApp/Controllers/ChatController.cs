@@ -44,6 +44,22 @@ namespace ChatApp.Controllers
             return BadRequest(new { Message = "Model State is not valid." });
         }
 
+        [HttpPost("AddFilemsg")]
+        public IActionResult AddFilemsg([FromForm] FileMessageModel message)
+        {
+            if (ModelState.IsValid)
+            {
+                if (message == null)
+                {
+                    return BadRequest(new { Message = "Cannot send a empty message." });
+                }
+                chatService.SendFileMessage(message);
+                return Ok(new { Message = "File message added succesfully." });
+            }
+            return BadRequest(new { Message = "Model State is not valid." });
+        }
+
+
         [HttpPost("Addreplymsg")]
         public IActionResult AddReplymsg([FromForm] TextMessageModel message, [FromQuery] int messageId)
         {
@@ -107,12 +123,17 @@ namespace ChatApp.Controllers
 
         }
 
-        [HttpGet("RecentMessagesssss")]
+        [HttpGet("UnreadCount")]
 
-        public IActionResult GetConversati([FromQuery] int usrId , [FromQuery] int otherId)
+        public IActionResult GetUnreadCount([FromQuery] int usrId , [FromQuery] int otherId)
         {
 
-            var conversations = context.ConversationResults.FromSqlRaw("EXEC dbo.GetAllConversationByUserIdsBoth @UserID, @OtherID", new SqlParameter("UserID", usrId), new SqlParameter("OtherID", otherId));
+            var conversations = context.ConversationResults.FromSqlRaw("EXEC dbo.GetAllConversationByUserIdsBoth @UserID, @OtherID", new SqlParameter("UserID", usrId), new SqlParameter("OtherID", otherId)).ToList();
+            var unreadCount = 0;
+            foreach (var conversation in conversations)
+            {
+               // if(conversation.)
+            }
             return Ok(conversations);
 
 

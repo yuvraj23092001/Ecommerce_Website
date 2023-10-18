@@ -36,6 +36,12 @@ export class ChatService {
     });
   }
 
+  // Send File Messages 
+  sendFileMessages(formData :FormData): Observable<any>{
+      return this.http.post<any>(`${this.baseUrl}/AddFilemsg`,formData);
+      
+  }
+
   // Search bar 
   SearchOthers(userObj:string,otheruserObj:string){
      return this.http.get<any>(`${this.baseUrl}/SearchOthers?searchname=${otheruserObj}&username=${userObj}`);
