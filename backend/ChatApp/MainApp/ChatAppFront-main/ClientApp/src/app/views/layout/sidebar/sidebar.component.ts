@@ -4,16 +4,18 @@ import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { ChatService } from 'src/app/services/chat/chat.service';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, NgbModule, FormsModule],
+  imports: [CommonModule, NgbModule, FormsModule,RouterLink],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent {
-  constructor(private modalService: NgbModal, private chatService: ChatService) { }
+  constructor(private modalService: NgbModal, private chatService: ChatService, private authService : AuthService) { }
   // @ViewChild('basicModal') basicModal: any;
 
   profileImageUrl = '../../assets/images/noPic.svg';
@@ -63,12 +65,6 @@ export class SidebarComponent {
 
   onClick(Username: string) {
     this.chatService.Username.next(Username);
-    console.log(Username);
-    this.chatService.viewMessages('string', Username).subscribe((res) => {
-      console.log(res);
-    },
-      (err) => { console.log(err); });
-
   }
   
   
@@ -77,6 +73,11 @@ export class SidebarComponent {
     const event = (term.target as HTMLInputElement).value;
     this.searchTerms.next(event);
     console.log(event);
+  }
+
+  logout(){
+    this.authService.logout();
+
   }
 
 }

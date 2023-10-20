@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouteConfigLoadEnd, RouteConfigLoadStart, Router, RouterModule } from '@angular/router';
 import { FooterComponent } from '../footer/footer.component';
-import { NavbarComponent } from '../navbar/navbar.component';
+
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-base',
   standalone: true,
-  imports: [CommonModule,RouterModule,FooterComponent,NavbarComponent,SidebarComponent],
+  imports: [CommonModule,RouterModule,FooterComponent,SidebarComponent],
   templateUrl: './base.component.html',
   styleUrls: ['./base.component.css']
 })

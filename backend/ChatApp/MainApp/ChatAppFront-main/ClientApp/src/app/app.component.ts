@@ -4,11 +4,10 @@ import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { BaseComponent } from './views/layout/base/base.component';
 import { FooterComponent } from './views/layout/footer/footer.component';
-import { NavbarComponent } from './views/layout/navbar/navbar.component';
+
 import { SidebarComponent } from './views/layout/sidebar/sidebar.component';
 import { ChatComponent } from './views/layout/chat/chat.component';
-import { ChatService } from './services/chat/chat.service';
-import { Subscription } from 'rxjs';
+
 
 
 
@@ -19,10 +18,8 @@ import { Subscription } from 'rxjs';
     CommonModule, 
     RouterModule,
     HomeComponent,
-
     BaseComponent,
     FooterComponent,
-    NavbarComponent,
     SidebarComponent,
     ChatComponent,
     

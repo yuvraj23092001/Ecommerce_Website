@@ -21,6 +21,11 @@
       
     </div>
 
-    <app-chat *ngIf = "conversation"></app-chat>
+    <app-chat *ngIf = "conversation"
+    [conversations] = "conversations"
+    [currentUserId]="currentUserId"
+    [currentUserName]="currentUserName"
+    [otheruserName]="otheruserName"
+    ></app-chat>
   </div>
 </div>

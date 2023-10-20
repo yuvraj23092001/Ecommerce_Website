@@ -12,6 +12,7 @@ export class ChatService {
   private baseUrl:string ="http://localhost:5050/api/Chat";
   public Username = new Subject<string>();
   public Message = new Subject<string>();
+  // public Conversations = new Subject<any[]>();
   constructor(private http : HttpClient, private router:Router) { }
 
   // Get All Messages 
@@ -20,7 +21,7 @@ export class ChatService {
   }
   
   // Send Messages 
-  sendMessage(userObj:any,otherObj:any,messageObj:string,replyedto :any):Observable<any>{
+  sendMessage(userObj:any,otherObj:any,messageObj:string,replyedto :any,Type:string):Observable<any>{
 
     // const formData = new FormData();
     // formData.append("SenderId", userObj);
@@ -32,7 +33,8 @@ export class ChatService {
       SenderId : userObj,
       ReceiverId : otherObj,
       Content : messageObj,
-      ReplyedToId : replyedto
+      ReplyedToId : replyedto,
+      Type : Type
     });
   }
 

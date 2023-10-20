@@ -9,9 +9,9 @@
           <div class="dropdown">
             <img src="../../assets/images/moreVertIcon.svg" />
             <div class="dropdown-content">
-                <button class="btn">View-Profile</button>
-                <button class="btn">Edit-Profile</button>
-                <button class="btn">Logout</button>
+                <button routerLink = "/view-profile" class="btn">View-Profile</button>
+                <button routerLink = "/edit-profile" class="btn">Edit-Profile</button>
+                <button class="btn" (click)="logout()">Logout</button>
             </div>
           </div>
           
@@ -52,7 +52,8 @@
               *ngIf="conversation.latestMessageRead"
               src="../../assets/images/doubleTickBlue.svg"
             /> -->
-            {{ conversation.content }}
+            <div *ngIf="!conversation.content.includes('/chat/')">{{ conversation.content | slice:0:40 }}{{ conversation.content.length > 40 ? '...' : '' }}</div>
+            <div *ngIf="conversation.content.includes('/chat/')" >Media File</div>
           </div>
         </div>
       </div>

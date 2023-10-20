@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
@@ -19,40 +19,22 @@ export class ChatComponent {
   showEmoji : boolean = false;
   emojiPickerVisible = false;
   message = '';
-  conversations = [
+  @Input() conversations = [
   ];
-  currentUserId :any ;
-  currentUserName : any;
-  otheruserName : string;
+  @Input() currentUserId :any ;
+  @Input() currentUserName : any;
+  @Input() otheruserName : string;
   userId : string ;
   imageFile: File;
-  constructor(private chatService :ChatService, private authService : AuthService,private modalService : NgbModal) {}
-
-  ngOnInit(): void {
-    this.authService.user().subscribe((username) => {
-      this.currentUserName = username;
-    })
+  constructor(private chatService :ChatService, private authService : AuthService,private modalService : NgbModal) {
     
-    this.currentUserName = this.authService.getUser();
-    //  console.log(this.currentUserName);
-
-    this.chatService.GetUserId(this.currentUserName).subscribe((id)=>{
-      this.currentUserId = id;
-      //  console.log(this.currentUserId);
-   })
-   
-   
-    this.chatService.Username.subscribe(data => {
-     this.otheruserName = data;
-     this.chatService.GetUserId(this.otheruserName).subscribe((id)=>{
-        this.userId = id;
-     })
-     this.chatService.viewMessages(this.currentUserName,data).subscribe((message)=>{
-        this.conversations = message.reverse();
-        console.log(this.conversations);
-     })
-    })
- }
+  }
+  
+  ngOnInit(){
+      this.chatService.GetUserId(this.otheruserName).subscribe((userId)=>{
+         this.userId = userId;
+      })
+  }
   
  Emoji(event, message :any){
   
@@ -77,7 +59,7 @@ toggleEmoji(message :any){
 
     console.log(value);
     
-    this.chatService.sendMessage(this.currentUserId,this.userId,value,0).subscribe((data)=>{
+    this.chatService.sendMessage(this.currentUserId,this.userId,value,0,'Null').subscribe((data)=>{
        this.chatService.Message.next(this.currentUserName);
        this.conversations.unshift(
         {
@@ -87,7 +69,8 @@ toggleEmoji(message :any){
           dateTime : Date.now(),
           isReply : false,
           isSeen : false,
-          replyedToId : 0
+          replyedToId : 0,
+          Type : 'Null'
         }
        );
       
@@ -131,11 +114,7 @@ toggleEmoji(message :any){
     this.chatService.sendFileMessages(formdata).subscribe((data)=>{
       console.log(data);
     })
-    // formdata.append('MessageFrom',this.loggedInUser.userName),
-    // formdata.append('MessageTo',this.selUser.userName),
-    // this.chatService.sendFileMessage(formdata).pipe(takeUntil(this.ngUnsubscribe)).subscribe((data:MessageDisplayModel)=>{
-    //   this.chatService.DidAMessage.next();
-    // })
+    
   }
 
   // Implement the logic for replying to a message.
