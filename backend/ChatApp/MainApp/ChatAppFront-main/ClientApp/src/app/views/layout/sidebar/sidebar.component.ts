@@ -17,7 +17,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class SidebarComponent {
   constructor(private modalService: NgbModal, private chatService: ChatService, private authService : AuthService) { }
   // @ViewChild('basicModal') basicModal: any;
-
+  username = localStorage.getItem('username');
   profileImageUrl = '../../assets/images/noPic.svg';
   private searchTerms = new Subject<string>();
   results : any[] ;
@@ -26,7 +26,7 @@ export class SidebarComponent {
 
   ngOnInit() : void{
      // Load the users who i have chatted before 
-     this.chatService.RecentMessages('ring').subscribe((data)=>{
+     this.chatService.RecentMessages(this.username).subscribe((data)=>{
         this.conversations = data;
         console.log(data);
      });
@@ -42,11 +42,11 @@ export class SidebarComponent {
       distinctUntilChanged()
      ).subscribe(term =>{
       if (term === ""){
-         this.chatService.RecentMessages('ring').subscribe(data => {
+         this.chatService.RecentMessages(this.username).subscribe(data => {
           this.conversations = data;
          })  
       }
-      this.chatService.SearchOthers('ring',term).subscribe(data =>{
+      this.chatService.SearchOthers(this.username,term).subscribe(data =>{
           this.conversations = data ;
           
       });

@@ -52,7 +52,7 @@
               *ngIf="conversation.latestMessageRead"
               src="../../assets/images/doubleTickBlue.svg"
             /> -->
-            <div *ngIf="!conversation.content.includes('/chat/')">{{ conversation.content | slice:0:40 }}{{ conversation.content.length > 40 ? '...' : '' }}</div>
+            <div *ngIf="!conversation.content.includes('/chat/')">{{ conversation.content | slice:0:20 }}{{ conversation.content.length > 40 ? '...' : '' }}</div>
             <div *ngIf="conversation.content.includes('/chat/')" >Media File</div>
           </div>
         </div>

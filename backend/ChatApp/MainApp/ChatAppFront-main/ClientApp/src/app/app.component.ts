@@ -30,23 +30,7 @@ import { ChatComponent } from './views/layout/chat/chat.component';
 })
 export class AppComponent {
   title = 'ClientApp';
-  // conversation :string = null;
-  // Messages: string[] = [];
   
-  // private subscription: Subscription;
-
-  // constructor(private chatService: ChatService) {
-  //   this.subscription = this.chatService.Username.subscribe((message) => {
-      
-  //     this.conversation = "True";
-  //   });
-  // }
-
-  // ngOnDestroy() {
-  //   // Unsubscribe to avoid memory leaks
-  //   this.subscription.unsubscribe();
-  // }
-
 
   
 }

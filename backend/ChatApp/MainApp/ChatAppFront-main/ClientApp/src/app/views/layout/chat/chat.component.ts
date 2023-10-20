@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
@@ -19,11 +19,12 @@ export class ChatComponent {
   showEmoji : boolean = false;
   emojiPickerVisible = false;
   message = '';
-  @Input() conversations = [
-  ];
+  @Output() dataEmitter: EventEmitter<any[]> = new EventEmitter<any[]>();
+  @Input() conversations = [];
   @Input() currentUserId :any ;
   @Input() currentUserName : any;
   @Input() otheruserName : string;
+
   userId : string ;
   imageFile: File;
   constructor(private chatService :ChatService, private authService : AuthService,private modalService : NgbModal) {
@@ -31,11 +32,13 @@ export class ChatComponent {
   }
   
   ngOnInit(){
+      console.log(this.otheruserName);
+      console.log("fsda f af " , this.currentUserName);
       this.chatService.GetUserId(this.otheruserName).subscribe((userId)=>{
          this.userId = userId;
       })
   }
-  
+
  Emoji(event, message :any){
   
   const text = message.value + event.emoji.native;
@@ -61,19 +64,7 @@ toggleEmoji(message :any){
     
     this.chatService.sendMessage(this.currentUserId,this.userId,value,0,'Null').subscribe((data)=>{
        this.chatService.Message.next(this.currentUserName);
-       this.conversations.unshift(
-        {
-          content : value,
-          senderId : this.currentUserId,
-          recieverId : this.userId,
-          dateTime : Date.now(),
-          isReply : false,
-          isSeen : false,
-          replyedToId : 0,
-          Type : 'Null'
-        }
-       );
-      
+       this.dataEmitter.emit([value,this.userId]);
     });
     
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../services/chat/chat.service';
 import { Subscription } from 'rxjs';
@@ -26,6 +26,8 @@ export class HomeComponent {
   private subscription: Subscription;
 
   constructor(private chatService: ChatService, private authService: AuthService) {
+    console.log("this is done", this.currentUserName);
+    
     this.subscription = this.chatService.Username.subscribe((message) => {
       
       this.conversation = true;
@@ -34,11 +36,8 @@ export class HomeComponent {
 
   
   ngOnInit(): void {
-    this.authService.user().subscribe((username) => {
-      this.currentUserName = username;
-    })
     
-    this.currentUserName = this.currentUserName || this.authService.getUser();
+     this.currentUserName = localStorage.getItem('username');
      console.log(this.currentUserName);
 
     this.chatService.GetUserId(this.currentUserName).subscribe((id)=>{
@@ -49,6 +48,7 @@ export class HomeComponent {
     this.chatService.Username.subscribe(data => {
       // console.log("insid")
      this.otheruserName = data;
+
      this.chatService.viewMessages(this.currentUserName,data).subscribe((message)=>{
         this.conversations = message.reverse();
         console.log(this.conversations);
@@ -58,6 +58,28 @@ export class HomeComponent {
     })
  }
 
+ 
+  
+  handleData(data: any[]) {
+       console.log(data);
+
+       this.conversations = [
+        {
+          content: data[0],
+          senderId: this.currentUserId,
+          recieverId: data[1],
+          dateTime: Date.now(),
+          isReply: false,
+          isSeen: false,
+          replyedToId: 0,
+          type: 'Null'
+        },
+        ...this.conversations
+      ];
+      
+       console.log("ggg ", this.conversations);
+  }
+  
   ngOnDestroy() {
     // Unsubscribe to avoid memory leaks
     this.subscription.unsubscribe();

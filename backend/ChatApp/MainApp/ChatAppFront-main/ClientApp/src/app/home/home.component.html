@@ -22,6 +22,7 @@
     </div>
 
     <app-chat *ngIf = "conversation"
+    (dataEmitter)="handleData($event)"
     [conversations] = "conversations"
     [currentUserId]="currentUserId"
     [currentUserName]="currentUserName"
