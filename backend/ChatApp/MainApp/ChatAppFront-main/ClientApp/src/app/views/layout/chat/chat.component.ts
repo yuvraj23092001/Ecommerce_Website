@@ -5,6 +5,7 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { ChatService } from 'src/app/services/chat/chat.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Message } from 'src/app/models/message.model';
 
 
 @Component({
@@ -19,11 +20,23 @@ export class ChatComponent {
   showEmoji : boolean = false;
   emojiPickerVisible = false;
   message = '';
+  IsReplying :boolean = false;
+  messageInput : Message ={
+    senderId : 0,
+    receiverId : 0,
+    content : '',
+    isSeen : false,
+    dateTime : new Date(),
+    type : '',
+    replyedToId: 0,
+    isReply : false
+  } ;
   @Output() dataEmitter: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Input() conversations = [];
   @Input() currentUserId :any ;
   @Input() currentUserName : any;
   @Input() otheruserName : string;
+  
 
   userId : string ;
   imageFile: File;
@@ -55,17 +68,25 @@ toggleEmoji(message :any){
     let value = event.target.value.trim();
     this.message = '';
     if (value.length < 1) return false;
-    // console.log("hei");
-    // console.log(this.currentUserId);
-    // console.log(this.currentUserName);
-    // console.log(this.otheruserName);
+    this.CloseRplyMsg();
+    // check if the message is a reply or not . 
+    console.log(this.messageInput.replyedToId);
+    if(this.messageInput.replyedToId == 0){
+      this.chatService.sendMessage(this.currentUserId,this.userId,value,0,'Null').subscribe((data)=>{
+        this.chatService.Message.next(this.currentUserName);
+        this.dataEmitter.emit([value,this.userId]);
+     });
+    }
+    else{
 
-    console.log(value);
-    
-    this.chatService.sendMessage(this.currentUserId,this.userId,value,0,'Null').subscribe((data)=>{
-       this.chatService.Message.next(this.currentUserName);
-       this.dataEmitter.emit([value,this.userId]);
-    });
+      console.log(this.messageInput.replyedToId);
+      this.chatService.sendReplyMessage(value,this.currentUserId,this.userId,'Null',this.messageInput.replyedToId,this.messageInput.replyedToId).subscribe((data)=>{
+        console.log(data);
+        this.chatService.Message.next(this.currentUserName);
+        this.dataEmitter.emit([value,this.userId,this.messageInput.replyedToId]);
+      });
+
+    }
     
 
     
@@ -76,6 +97,13 @@ toggleEmoji(message :any){
   emojiClicked(event) {
     this.message += event.emoji.native;
   }
+  
+  // getContent(messageId : number){
+  //    this.chatService.getContent(messageId).subscribe((data)=>{
+  //       return data;
+  //    })
+     
+  // }
 
   recentChatDate(date :Date){
     return this.chatService.recentChatDate(date);
@@ -109,7 +137,17 @@ toggleEmoji(message :any){
   }
 
   // Implement the logic for replying to a message.
-  method2(){
+  ToggleReplyMsg(msg:any){
+     console.log(msg);
+     console.log("event fired");
+     this.messageInput.replyedToId = msg.id;
+     this.messageInput.isReply = true;
+     this.messageInput.content = msg.content;
+     this.IsReplying = true;
+     console.log(this.messageInput);
+  }
 
+  CloseRplyMsg(){
+    this.IsReplying = false;
   }
 }

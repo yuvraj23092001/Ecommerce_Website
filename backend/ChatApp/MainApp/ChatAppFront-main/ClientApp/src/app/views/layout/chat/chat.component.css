@@ -4,6 +4,7 @@
     height: 100%;
     background-color: #e7dfdc;
     flex-direction: column;
+    justify-content: center;
 }
 #container #header {
     min-height: 67px;
@@ -45,7 +46,7 @@
     flex-direction: column;
     flex-direction: column-reverse;
     padding: 20px 50px;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 #container #body .message {
     margin-top: 10px;
@@ -69,7 +70,7 @@
     align-items: flex-end;
 }
 #container #body .message.me .messageContent {
-    background-color: #dcf7c5;
+    background-color: #d0f1b2;
 }
 #container #footer {
     min-height: 67px;
@@ -127,4 +128,18 @@
 
 #container #footer #smileyIcon {
     flex-basis: 50px;
+}
+
+#chatForm {
+    margin-bottom: 8px;
+}
+
+.replymsg{
+    background-color: rgb(220, 247, 232);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.overflowrap{
+    overflow-wrap: anywhere;
 }

@@ -60,7 +60,22 @@ namespace ChatApp.Infrastructure.ServiceImplementation
 
                 var obj = new TextMessageModel();
                 // will update if needed 
-
+                if(content.ReplyedToId != 0)
+                {
+                    obj.IsReply = true;
+                    obj.ReplyedToId = content.ReplyedToId;
+                    
+                    obj.ReplyContent = context.Messages
+               .Where(m => m.Id == content.ReplyedToId)
+               .Select(m => m.Content)
+               .FirstOrDefault();
+                }
+                else
+                {
+                    obj.IsReply = false;
+                    obj.ReplyedToId = 0;
+                }
+                obj.Id = content.Id;
                 obj.SenderId = userId == content.SenderId ? userId : seluserId;
                 obj.ReceiverId = seluserId == content.ReceiverId ? seluserId : userId;
                 obj.Content = content.Content;
@@ -112,11 +127,7 @@ namespace ChatApp.Infrastructure.ServiceImplementation
         }
         public void ReplyMessage(TextMessageModel message, int MessageId)
         {
-            // If we are trying to reply to a deleted message
-            if (CheckDeletedById(MessageId))
-            {
-                return;
-            }
+            
             var profile = context.Profiles.FirstOrDefault(profile => profile.Id == message.ReceiverId);
             if (profile != null && message.Content != null) // checking if the profile is valid and message is not null 
             {
@@ -124,10 +135,11 @@ namespace ChatApp.Infrastructure.ServiceImplementation
                 msg.SenderId = message.SenderId;
                 msg.ReceiverId = message.ReceiverId;
                 msg.IsReply = true;
-                msg.ReplyedToId = MessageId;
+                msg.ReplyedToId = message.ReplyedToId;
                 msg.Content = message.Content;
-                msg.IsSeen = (bool)message.IsSeen;
+                msg.IsSeen = false;
                 msg.DateTime = DateTime.Now;
+                msg.Type = message.Type;
                 context.Messages.Add(msg);
                 context.SaveChanges();
             }

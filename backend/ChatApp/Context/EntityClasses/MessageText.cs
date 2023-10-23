@@ -31,7 +31,7 @@ namespace ChatApp.Context.EntityClasses
 
         public int? ReplyedToId { get; set; }
 
-        public string Type { get; set; } = null;
+        public string Type { get; set; } = "Null";
 
     }
 }

@@ -97,7 +97,8 @@ namespace ChatApp.Infrastructure.ServiceImplementation
                 FirstName = profile.FirstName,
                 LastName = profile.LastName,
                 ProfileImageLocation = profile.ImagePath,
-                LastUpdatedAt = profile.LastUpdatedAt,
+                LastUpdatedAt = profile.LastUpdatedAt
+
             };
             return user;
         }

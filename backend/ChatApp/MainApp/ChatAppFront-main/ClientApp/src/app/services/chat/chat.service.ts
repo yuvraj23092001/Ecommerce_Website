@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -22,19 +22,34 @@ export class ChatService {
   
   // Send Messages 
   sendMessage(userObj:any,otherObj:any,messageObj:string,replyedto :any,Type:string):Observable<any>{
-
-    // const formData = new FormData();
-    // formData.append("SenderId", userObj);
-    // formData.append("ReceiverId", userObj);
-    // formData.append("Content", userObj);
-    // formData.append("SenderId", userObj);
-
     return this.http.post<any>(`${this.baseUrl}/Addmsg`,{
       SenderId : userObj,
       ReceiverId : otherObj,
       Content : messageObj,
       ReplyedToId : replyedto,
       Type : Type
+    });
+  }
+  // Send Reply Message 
+  sendReplyMessage(content:string,senderId:string,receiverId:string,type: string,replyedto: number,messageId: number){
+    // const params = new HttpParams()
+    //   .set('messageId', messageId)
+    return this.http.post<any>(`${this.baseUrl}/Addmsg`,{
+      SenderId : senderId,
+      ReceiverId : receiverId,
+      Content : content,
+      ReplyedToId : replyedto,
+      Type : type,
+    },)
+  }
+
+  // Getting Content from message
+  getContent(messageId : number):Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/GetMessageContent`,
+    {
+      params: {
+        messageId : messageId
+      }
     });
   }
 

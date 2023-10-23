@@ -17,7 +17,7 @@ namespace ChatApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    // [Authorize]
     public class ChatController : ControllerBase
     {
         private readonly IChatService chatService;
@@ -61,7 +61,7 @@ namespace ChatApp.Controllers
 
 
         [HttpPost("Addreplymsg")]
-        public IActionResult AddReplymsg([FromForm] TextMessageModel message, [FromQuery] int messageId)
+        public IActionResult AddReplymsg([FromBody] TextMessageModel message, [FromQuery] int messageId)
         {
             if (ModelState.IsValid)
             {
@@ -70,7 +70,7 @@ namespace ChatApp.Controllers
                     return BadRequest(new { Message = "Cannot send a empty message." });
                 }
                 chatService.ReplyMessage(message, messageId);
-                return Ok(new { Message = "message added succesfully." });
+                return Ok(new { Message = "message added succesfully." ,message});
             }
             return BadRequest(new { Message = "Model State is not valid." });
         }
@@ -94,6 +94,20 @@ namespace ChatApp.Controllers
             return BadRequest(new { Message = "Model State is not valid." });
         }
 
+        [HttpPost("GetMessageContent")]
+        public async Task<IActionResult> Getmsg([FromBody]int messageId)
+        {
+            if (ModelState.IsValid)
+            {
+                var content = await context.Messages
+               .Where(m => m.Id == messageId)
+               .Select(m => m.Content)
+               .FirstOrDefaultAsync();
+
+                return Ok(content);
+            }
+            return BadRequest(new { Message = "Model State is not valid." });
+        }
         // Method to search other users across the chatapp using their username 
 
         [HttpGet("SearchOthers")]
