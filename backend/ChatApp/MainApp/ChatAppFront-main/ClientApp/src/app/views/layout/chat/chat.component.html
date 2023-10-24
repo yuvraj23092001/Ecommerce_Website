@@ -33,6 +33,15 @@
         <div *ngIf="message.type === 'Null'" class="messageContent" (dblclick)="ToggleReplyMsg(message)">
           {{ message.content }}
           <div class="time">{{recentChatDate(message.dateTime) }}</div>
+          
+            <img
+              *ngIf="message.isSeen == 0"
+              src="../../assets/images/doubleTick.svg"
+            />
+            <img
+              *ngIf="message.isSeen == 1"
+              src="../../assets/images/doubleTickBlue.svg"
+            />
         </div>
       </div>
       

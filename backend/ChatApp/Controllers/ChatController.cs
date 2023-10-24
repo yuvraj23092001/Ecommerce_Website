@@ -108,6 +108,18 @@ namespace ChatApp.Controllers
             }
             return BadRequest(new { Message = "Model State is not valid." });
         }
+
+        [HttpPost("markAsRead")]
+        public IActionResult markAsRead([FromForm]string username, [FromForm] string selusername)
+        {
+            if (ModelState.IsValid)
+            {
+                chatService.MarkAsRead(username, selusername);
+                return Ok(new { Message = "Marked as Read."});
+            }
+            return BadRequest(new { Message = "Model State is not valid." });
+        }
+        
         // Method to search other users across the chatapp using their username 
 
         [HttpGet("SearchOthers")]

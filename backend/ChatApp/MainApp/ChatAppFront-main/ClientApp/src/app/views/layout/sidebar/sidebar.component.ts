@@ -67,8 +67,20 @@ export class SidebarComponent {
     this.chatService.Username.next(Username);
   }
   
+  MarkAllAsRead(){
+    this.chatService.MarkAsRead(this.username,'All').subscribe();
+    this.chatService.MarkAsSeenChanged.next("Changed");
+  }
   
-  
+  MarkAsRead(e:Event , selusername:string){
+    e.preventDefault();
+    e.stopPropagation();
+    this.chatService.MarkAsRead(this.username,selusername).subscribe((data)=>{
+      console.log(data);
+    });
+    this.chatService.MarkAsSeenChanged.next("Changed.");
+   }
+
   search(term: Event): void {
     const event = (term.target as HTMLInputElement).value;
     this.searchTerms.next(event);

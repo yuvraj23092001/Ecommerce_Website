@@ -27,11 +27,19 @@
           </li>
         </ul>
       </div>
+      <div class="text-muted mb-1 align-items" style="text-align: center;">
+        Recent chats
+        <p class="" title="Mark all as read" (click)="MarkAllAsRead()">
+          <img width="19" src="../../assets/images/check-square.svg" />
+        </p>
+      </div>
+     
     </div>
-  
+    
     <div id="sidebarContent">
       <!-- <div id="noConversations">All chats are archived</div> -->
-  
+      
+
       <div class="conversation" *ngFor="let conversation of  conversations"
        (click)="onClick(conversation.userName)"
       >
@@ -41,7 +49,13 @@
         <div class="content">
           <div class="conversationHeader">
             <div class="name">{{ conversation.userName }} ( {{conversation.firstName}} )</div>
+            <div> <p class="" title="Mark all as read" (click)="MarkAsRead($event,conversation.userName)">
+              <img width="19" src="../../assets/images/check-circle.svg" />
+            </p>
+          </div>
             <div class="time">{{ recentChatDate(conversation.dateTime) }}</div>
+            <!-- *ngIf="recent.seen > 0" -->
+            <div class="badge badge-pill badge-primary ml-auto">{{conversation.userName}}</div>
           </div>
           <div class="message">
             <!-- <img

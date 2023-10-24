@@ -12,8 +12,26 @@ export class ChatService {
   private baseUrl:string ="http://localhost:5050/api/Chat";
   public Username = new Subject<string>();
   public Message = new Subject<string>();
-  // public Conversations = new Subject<any[]>();
+  // Added mark As Seen Changed 
+  MarkAsSeenChanged = new Subject<string>();
+
+
   constructor(private http : HttpClient, private router:Router) { }
+  
+  // Mark Message As Read 
+  MarkAsRead(username: string, seluserusername: string) {
+    const params = new HttpParams()
+      .set('username', username)
+      .set('selusername', seluserusername);
+    return this.http.post<any>(`${this.baseUrl}/markAsRead`, params);
+  }
+  // markMessageAsRead(messageId: number): Observable<any> {
+  //   // Construct the URL with the messageId as a query parameter
+  //   const url = `${this.apiUrl}/markAsRead?messageId=${messageId}`;
+
+  //   // Make a POST request (even though the data is in the query parameters)
+  //   return this.http.post(url, null);
+  // }
 
   // Get All Messages 
   viewMessages(userObj : string, otherObj:string):Observable<any>{
