@@ -5,6 +5,7 @@ import { AuthService } from '../services/auth/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
+import { SignalrService } from '../services/signalr/signalr.service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private auth:AuthService,
     private router :Router,
-    private cookieService : CookieService
+    private cookieService : CookieService,
+    private signalRService : SignalrService
   ) {}
   
   ngOnInit() {
@@ -63,7 +65,8 @@ export class LoginComponent implements OnInit, OnDestroy {
          (res) => {
               this.cookieService.set('Authorization',`${res.token}`);
               this.auth.setUser(res.username);
-              
+              // starting signalr connection.
+              this.signalRService.startConnection(res.username);
               this.router.navigate(['/home']);
       }
       

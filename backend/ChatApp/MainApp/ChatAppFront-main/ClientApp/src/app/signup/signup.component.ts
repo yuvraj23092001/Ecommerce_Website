@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router, RouterModule } from '@angular/router';
+import { SignalrService } from '../services/signalr/signalr.service';
 
 @Component({
   selector: 'app-signup',
@@ -16,7 +17,7 @@ export class SignupComponent{
   isText: boolean = false;
   eyeIcon: string = 'fa-eye-slash';
   signUpForm!: FormGroup;
-  constructor(private fb : FormBuilder,private auth : AuthService, private router: Router){}
+  constructor(private fb : FormBuilder,private auth : AuthService, private router: Router,private signalRService : SignalrService){}
   ngOnInit() {
     this.auth.setShowToolbar(false);
     this.signUpForm = this.fb.group({
@@ -44,18 +45,7 @@ export class SignupComponent{
   ngOnDestory():void {
     this.auth.setShowToolbar(true);
  }
-  // private validateAllFormFields(formGroup: FormGroup){
-  //   Object.keys(formGroup.controls).forEach(field =>{
-  //     const control = formGroup.get(field);
-  //     if(control instanceof FormControl){
-  //       control.markAsDirty({onlySelf:true});
-  //     }
-  //     else if(control instanceof FormGroup){
-  //       this.validateAllFormFields(control)
-
-  //     }
-  //   })
-  // }
+  
   
   onSignUp(){
     if (this.signUpForm.valid) {

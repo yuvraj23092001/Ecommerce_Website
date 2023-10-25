@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { SidebarComponent } from '../views/layout/sidebar/sidebar.component';
 import { ChatComponent } from '../views/layout/chat/chat.component';
 import { AuthService } from '../services/auth/auth.service';
+import { SignalrService } from '../services/signalr/signalr.service';
+import { Message } from '../models/message.model';
 
 @Component({
   selector: 'app-home',
@@ -25,7 +27,7 @@ export class HomeComponent {
   
   private subscription: Subscription;
 
-  constructor(private chatService: ChatService, private authService: AuthService) {
+  constructor(private chatService: ChatService, private authService: AuthService,private signalRService : SignalrService ) {
     console.log("this is done", this.currentUserName);
     
     this.subscription = this.chatService.Username.subscribe((message) => {
@@ -37,13 +39,20 @@ export class HomeComponent {
   
   ngOnInit(): void {
     
+     
+
      this.currentUserName = localStorage.getItem('username');
      console.log(this.currentUserName);
+      // Initializing signalr
+     this.signalRService.startConnection(this.currentUserName);
 
     this.chatService.GetUserId(this.currentUserName).subscribe((id)=>{
       this.currentUserId = id;      
-   })
-   
+    })
+    
+    // this.signalRService.hubConnection.on('recieveMessage',(msg: Message)=>{
+        
+    // })
 
     this.chatService.Username.subscribe(data => {
       // console.log("insid")

@@ -6,6 +6,8 @@ import { ChatService } from 'src/app/services/chat/chat.service';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { SignalrService } from 'src/app/services/signalr/signalr.service';
+import { Message } from 'src/app/models/message.model';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,7 +17,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent {
-  constructor(private modalService: NgbModal, private chatService: ChatService, private authService : AuthService) { }
+  constructor(private modalService: NgbModal, private chatService: ChatService, private authService : AuthService, private signalRService : SignalrService) { }
   // @ViewChild('basicModal') basicModal: any;
   username = localStorage.getItem('username');
   profileImageUrl = '../../assets/images/noPic.svg';
@@ -30,11 +32,15 @@ export class SidebarComponent {
         this.conversations = data;
         console.log(data);
      });
-
+    
+     this.signalRService.hubConnection.on('recieveMessage',(msg:Message)=>{
+       this.chatService.RecentMessages(this.username).subscribe((recent)=>{
+        this.conversations = recent;
+      })
+      })
+   
      this.chatService.Message.subscribe((data)=>{
-         this.chatService.RecentMessages(data).subscribe((recent)=>{
-            this.conversations = recent;
-         })
+         
      })
 
      this.searchTerms.pipe(
@@ -88,8 +94,11 @@ export class SidebarComponent {
   }
 
   logout(){
-    this.authService.logout();
-
+    this.signalRService.hubConnection.invoke("ConnectRemove",this.username).then(()=>{
+      this.authService.logout();
+    })
+   
+    
   }
 
 }

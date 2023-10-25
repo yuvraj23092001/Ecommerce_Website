@@ -1,6 +1,7 @@
 ﻿using ChatApp.Context.EntityClasses;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ChatApp.Context
 {
@@ -22,6 +23,7 @@ namespace ChatApp.Context
 
         public virtual DbSet<ConversationResult> ConversationResults { get; set; }
 
-        
+        public DbSet<Connection> Connections { get; set; }
+
     }
 }

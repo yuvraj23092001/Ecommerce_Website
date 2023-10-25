@@ -1,3 +1,4 @@
+using ChatApp;
 using ChatApp.Business.ServiceInterfaces;
 using ChatApp.Context;
 using ChatApp.Infrastructure.ServiceImplementation;
@@ -38,6 +39,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
              }
              
 );
+
+builder.Services.AddSignalR();
 
 // Adding Cors Policy to allow any origin to access our api's
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
@@ -126,8 +129,7 @@ app.UseRouting();
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
-    /*endpoints.MapControllers();*/
-    endpoints.MapControllerRoute("Default", "{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapHub<ChatHub>("/ChatHub");
 });
 
 app.UseSwagger();

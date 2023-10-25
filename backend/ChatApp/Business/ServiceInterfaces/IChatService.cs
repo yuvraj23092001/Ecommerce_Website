@@ -26,5 +26,7 @@ namespace ChatApp.Business.ServiceInterfaces
 
         public void SendFileMessage(FileMessageModel msg);
 
+        public void ResponsesToUsersMessage(int sender, int reciever, TextMessageModel response);
+
     }        
 }

@@ -25,13 +25,7 @@ export class ChatService {
       .set('selusername', seluserusername);
     return this.http.post<any>(`${this.baseUrl}/markAsRead`, params);
   }
-  // markMessageAsRead(messageId: number): Observable<any> {
-  //   // Construct the URL with the messageId as a query parameter
-  //   const url = `${this.apiUrl}/markAsRead?messageId=${messageId}`;
-
-  //   // Make a POST request (even though the data is in the query parameters)
-  //   return this.http.post(url, null);
-  // }
+  
 
   // Get All Messages 
   viewMessages(userObj : string, otherObj:string):Observable<any>{

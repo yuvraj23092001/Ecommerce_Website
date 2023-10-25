@@ -1,9 +1,11 @@
-﻿using ChatApp.Business.ServiceInterfaces;
+﻿using Azure;
+using ChatApp.Business.ServiceInterfaces;
 using ChatApp.Context;
 using ChatApp.Context.EntityClasses;
 using ChatApp.Models.MessageModel;
 using ChatApp.Models.UsersModel;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,11 +17,15 @@ namespace ChatApp.Infrastructure.ServiceImplementation
     {
         private readonly ChatAppContext context;
         private readonly IWebHostEnvironment environment;
+        private readonly ChatHub chatHub;
 
-        public ChatServices(ChatAppContext context, IWebHostEnvironment environment)
+        // Since We will be also using signalR outside the chathub so include it in constructor
+
+        public ChatServices(ChatAppContext context, IWebHostEnvironment environment,ChatHub chatHub)
         {
             this.context = context;
             this.environment = environment;
+            this.chatHub = chatHub;
         }
         // we will just uploading the data files to database 
         public void SendMessage(TextMessageModel message)
@@ -256,10 +262,35 @@ namespace ChatApp.Infrastructure.ServiceImplementation
                 context.Messages.Add(message);
                 context.SaveChanges();
 
+                var response = new TextMessageModel()
+                {
+                    Id = message.Id,
+                    Content = message.Content,
+                    DateTime = message.DateTime,
+                    SenderId = msg.SenderId,
+                    ReceiverId = msg.ReceiverId,
+                    ReplyedToId = 0,
+                    IsSeen = false,
+                    Type = message.Type,
+                };
+                ResponsesToUsersMessage(message.SenderId, message.ReceiverId, response);
             }
         }
 
 
-
+        //Signal R Response 
+        public void ResponsesToUsersMessage(int sender, int reciever, TextMessageModel response)
+        {
+            Connections Sender = this.context.Connections.FirstOrDefault(u => u.ProfileId == sender);
+            Connections Receiver = this.context.Connections.FirstOrDefault(u => u.ProfileId == reciever);
+            if (Receiver != null)
+            {
+                this.chatHub.Clients.Clients(Sender.SignalId, Receiver.SignalId).SendAsync("recieveMessage", response);
+            }
+            else
+            {
+                this.chatHub.Clients.Client(Sender.SignalId).SendAsync("recieveMessage", response);
+            }
+        }
     }
 }

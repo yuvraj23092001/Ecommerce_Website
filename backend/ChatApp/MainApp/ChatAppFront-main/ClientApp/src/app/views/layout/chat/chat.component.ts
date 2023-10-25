@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Message } from 'src/app/models/message.model';
 import { DomSanitizer } from '@angular/platform-browser';
+import { SignalrService } from 'src/app/services/signalr/signalr.service';
 
 
 @Component({
@@ -43,7 +44,7 @@ export class ChatComponent {
   userId : string ;
   imageFile: File;
   fileType: string;
-  constructor(private chatService :ChatService, private authService : AuthService,private modalService : NgbModal, private sanitizer: DomSanitizer) {
+  constructor(private chatService :ChatService, private authService : AuthService,private modalService : NgbModal, private sanitizer: DomSanitizer, private signalRService : SignalrService) {
     
   }
   
@@ -52,6 +53,12 @@ export class ChatComponent {
       console.log("fsda f af " , this.currentUserName);
       this.chatService.GetUserId(this.otheruserName).subscribe((userId)=>{
          this.userId = userId;
+      })
+
+      this.signalRService.hubConnection.on('recieveMessage',(msg: Message)=>{
+        console.log(msg);
+        this.conversations.push(msg);
+      
       })
   }
 
@@ -75,10 +82,13 @@ toggleEmoji(message :any){
     // check if the message is a reply or not . 
     console.log(this.messageInput.replyedToId);
     if(this.messageInput.replyedToId == 0){
-      this.chatService.sendMessage(this.currentUserId,this.userId,value,0,'Null').subscribe((data)=>{
-        this.chatService.Message.next(this.currentUserName);
-        this.dataEmitter.emit([value,this.userId]);
-     });
+
+      this.signalRService.hubConnection.invoke('sendMsg',this.message).catch((error)=>console.log(error));
+
+    //   this.chatService.sendMessage(this.currentUserId,this.userId,value,0,'Null').subscribe((data)=>{
+    //     this.chatService.Message.next(this.currentUserName);
+    //     this.dataEmitter.emit([value,this.userId]);
+    //  });
     }
     else{
 
