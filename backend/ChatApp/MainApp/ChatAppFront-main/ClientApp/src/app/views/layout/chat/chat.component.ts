@@ -6,6 +6,7 @@ import { ChatService } from 'src/app/services/chat/chat.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Message } from 'src/app/models/message.model';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class ChatComponent {
     replyedToId: 0,
     isReply : false
   } ;
+  imageSrc: string | ArrayBuffer;
   @Output() dataEmitter: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Input() conversations = [];
   @Input() currentUserId :any ;
@@ -40,7 +42,8 @@ export class ChatComponent {
 
   userId : string ;
   imageFile: File;
-  constructor(private chatService :ChatService, private authService : AuthService,private modalService : NgbModal) {
+  fileType: string;
+  constructor(private chatService :ChatService, private authService : AuthService,private modalService : NgbModal, private sanitizer: DomSanitizer) {
     
   }
   
@@ -118,7 +121,32 @@ toggleEmoji(message :any){
   onFileSelected(event){
     if (event.target.files.length > 0) {
       this.imageFile = (event.target as HTMLInputElement).files[0];
+      this.previewImage(this.imageFile);
     }
+  }
+  
+  previewImage(file: File): void {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.imageSrc = e.target.result;
+    };
+    // Read the file as a data URL, triggering the onload event above
+    reader.readAsDataURL(file);
+    this.fileType = file.type;
+  }
+  isImage(type: string): boolean {
+    return type.startsWith('image/');
+  }
+
+  isAudio(type: string): boolean {
+    return type.startsWith('audio/');
+  }
+
+  isVideo(type: string): boolean {
+    return type.startsWith('video/');
+  }
+  removePreview(){
+    this.imageSrc = null;
   }
 
   uploadFile(){
